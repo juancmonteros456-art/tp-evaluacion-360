@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evaluación 360° | Hackatón de Consultoras Tecnológicas</title>
+  <style>
+    :root{
+      --bg:#0b1020; --card:#121a2e; --card2:#18223b; --text:#eef3ff;
+      --muted:#aab5ce; --accent:#6c63ff; --accent2:#22d3a7; --line:#263451;
+      --danger:#ff6b7a; --shadow:0 18px 45px rgba(0,0,0,.28);
+    }
+    *{box-sizing:border-box;scroll-behavior:smooth}
+    body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:linear-gradient(135deg,#080c18,#10182c 55%,#0b1224);color:var(--text);line-height:1.6}
+    a{color:inherit;text-decoration:none}
+    .container{width:min(1120px,92%);margin:auto}
+    header{position:sticky;top:0;z-index:20;background:rgba(8,12,24,.86);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+    nav{height:70px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .logo{font-weight:800;letter-spacing:.5px}.logo span{color:var(--accent2)}
+    .links{display:flex;gap:18px;font-size:.9rem;color:var(--muted)}
+    .links a:hover{color:white}
+    .hero{padding:90px 0 65px;display:grid;grid-template-columns:1.15fr .85fr;gap:45px;align-items:center}
+    .tag{display:inline-block;padding:7px 12px;border:1px solid #354263;border-radius:999px;color:#c9d1e7;background:#111a30;font-size:.82rem}
+    h1{font-size:clamp(2.5rem,6vw,4.8rem);line-height:1.02;margin:18px 0}
+    h1 span{color:var(--accent)}
+    h2{font-size:2rem;margin:0 0 15px}
+    h3{margin-top:0}
+    .hero p{color:var(--muted);font-size:1.08rem;max-width:680px}
+    .btn{display:inline-block;margin-top:18px;background:var(--accent);padding:13px 19px;border-radius:11px;font-weight:700;box-shadow:0 10px 25px rgba(108,99,255,.25)}
+    .btn.secondary{background:var(--card2);border:1px solid var(--line);box-shadow:none}
+    .mockup{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:20px;box-shadow:var(--shadow)}
+    .mock-top{display:flex;gap:7px;margin-bottom:18px}.dot{width:10px;height:10px;border-radius:50%;background:#45516e}
+    .mini-card{background:var(--card2);padding:15px;border-radius:13px;margin:10px 0}
+    .mini-row{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:.88rem}
+    section{padding:75px 0}
+    .section-head{max-width:720px;margin-bottom:28px}.section-head p{color:var(--muted)}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .card{background:rgba(18,26,46,.88);border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:0 10px 30px rgba(0,0,0,.12)}
+    .card p{color:var(--muted);margin-bottom:0}
+    .number{font-size:.8rem;color:var(--accent2);font-weight:800}
+    .criteria{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+    .criterion{padding:20px;background:var(--card);border:1px solid var(--line);border-radius:15px}
+    .criterion strong{display:block;font-size:1.05rem;margin:6px 0}
+    .questionnaire{background:linear-gradient(180deg,#10182c,#0e1527);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+    form{display:grid;gap:15px}
+    .question{background:var(--card);padding:20px;border:1px solid var(--line);border-radius:15px}
+    .question label{display:block;font-weight:650;margin-bottom:12px}
+    select{width:100%;background:#0c1426;color:var(--text);border:1px solid #33415f;border-radius:9px;padding:11px}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-bottom:5px}
+    input,textarea{width:100%;background:#0c1426;color:var(--text);border:1px solid #33415f;border-radius:9px;padding:12px;font:inherit}
+    textarea{min-height:110px;resize:vertical}
+    .result{display:none;margin-top:22px;padding:24px;background:var(--card2);border:1px solid var(--line);border-radius:16px}
+    .score{font-size:3rem;font-weight:850;color:var(--accent2)}
+    .bar-wrap{margin:13px 0}.bar-label{display:flex;justify-content:space-between;font-size:.9rem;color:var(--muted)}
+    .bar{height:10px;background:#0a1020;border-radius:99px;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0;transition:width .8s}
+    .reflection{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    footer{padding:35px 0;color:var(--muted);border-top:1px solid var(--line);font-size:.9rem}
+    .note{padding:14px 16px;border-left:3px solid var(--accent2);background:#111a2d;color:#c6cee0;border-radius:8px}
+    @media(max-width:850px){.hero,.reflection{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}.criteria{grid-template-columns:1fr 1fr}.links{display:none}}
+    @media(max-width:520px){.grid,.criteria,.form-grid{grid-template-columns:1fr}section{padding:55px 0}.hero{padding-top:55px}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="container">
+    <nav>
+      <div class="logo">360<span>°</span> TEAM</div>
+      <div class="links">
+        <a href="#objetivo">Objetivo</a><a href="#criterios">Criterios</a><a href="#evaluacion">Evaluación</a><a href="#reflexion">Reflexión</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="container" style="display:contents">
+      <div>
+        <span class="tag">TP Nº 5 · Hackatón de Consultoras Tecnológicas</span>
+        <h1>Evaluación <span>360°</span> para equipos tecnológicos</h1>
+        <p>Una herramienta web para analizar cómo funciona un equipo de trabajo, detectar problemas y obtener una visión general sobre comunicación, organización, participación y colaboración.</p>
+        <a class="btn" href="#evaluacion">Realizar evaluación</a>
+        <a class="btn secondary" href="#objetivo">Ver propuesta</a>
+      </div>
+      <div class="mockup">
+        <div class="mock-top"><i class="dot"></i><i class="dot"></i><i class="dot"></i></div>
+        <h3>Resumen del equipo</h3>
+        <div class="mini-card"><div class="mini-row"><span>Comunicación</span><b>4.6 / 5</b></div></div>
+        <div class="mini-card"><div class="mini-row"><span>Organización</span><b>4.1 / 5</b></div></div>
+        <div class="mini-card"><div class="mini-row"><span>Colaboración</span><b>4.8 / 5</b></div></div>
+        <div class="mini-card"><div class="mini-row"><span>Participación</span><b>3.9 / 5</b></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="objetivo">
+    <div class="container">
+      <div class="section-head">
+        <h2>1. Objetivo de la herramienta</h2>
+        <p>La propuesta busca convertir la evaluación del trabajo grupal en información útil para mejorar el funcionamiento del equipo.</p>
+      </div>
+      <div class="grid">
+        <div class="card"><span class="number">01</span><h3>¿Para qué sirve?</h3><p>Para evaluar el desempeño de los integrantes desde una mirada amplia y obtener un resultado general del equipo.</p></div>
+        <div class="card"><span class="number">02</span><h3>Detectar problemas</h3><p>Permite identificar problemas de comunicación, falta de participación, desorganización y dificultades para cumplir tareas.</p></div>
+        <div class="card"><span class="number">03</span><h3>Mejorar el equipo</h3><p>Los resultados pueden servir para reconocer fortalezas y decidir qué aspectos necesitan mejorar.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="criterios">
+    <div class="container">
+      <div class="section-head">
+        <h2>2. Aspectos a evaluar</h2>
+        <p>Se eligieron ocho criterios porque cubren las principales situaciones que pueden afectar el trabajo colaborativo.</p>
+      </div>
+      <div class="criteria">
+        <div class="criterion"><span class="number">01</span><strong>Comunicación</strong><span>Facilita que las ideas y problemas se compartan de forma clara.</span></div>
+        <div class="criterion"><span class="number">02</span><strong>Responsabilidad</strong><span>Permite comprobar el compromiso individual con el proyecto.</span></div>
+        <div class="criterion"><span class="number">03</span><strong>Organización</strong><span>Ayuda a detectar problemas con tiempos, tareas y planificación.</span></div>
+        <div class="criterion"><span class="number">04</span><strong>Participación</strong><span>Mide si los integrantes se involucran activamente.</span></div>
+        <div class="criterion"><span class="number">05</span><strong>Cumplimiento</strong><span>Permite revisar si las tareas asignadas se terminan en tiempo y forma.</span></div>
+        <div class="criterion"><span class="number">06</span><strong>Colaboración</strong><span>Evalúa la capacidad de trabajar junto con los demás.</span></div>
+        <div class="criterion"><span class="number">07</span><strong>Respeto</strong><span>Considera si se escuchan y respetan las ideas y acuerdos.</span></div>
+        <div class="criterion"><span class="number">08</span><strong>Creatividad</strong><span>Observa el aporte de ideas y soluciones ante problemas.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="evaluacion" class="questionnaire">
+    <div class="container">
+      <div class="section-head">
+        <h2>3. Preguntas de evaluación</h2>
+        <p>Escala numérica de 1 a 5. En una evaluación real, las respuestas podrían ser anónimas para favorecer respuestas más sinceras.</p>
+      </div>
+
+      <form id="evalForm">
+        <div class="form-grid">
+          <div><label for="evaluado">Integrante evaluado</label><input id="evaluado" placeholder="Ej.: Integrante 1"></div>
+          <div><label for="rol">Rol</label>
+            <select id="rol" required>
+              <option value="">Seleccionar rol</option>
+              <option>Director/a del proyecto</option>
+              <option>Responsable de investigación</option>
+              <option>Responsable de comunicación</option>
+              <option>Responsable de producción</option>
+              <option>Responsable de documentación</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="question"><label>1. ¿Cumple con las tareas asignadas?</label><select required name="q1"><option value="">Seleccionar</option><option value="1">1 - Nunca</option><option value="2">2 - Pocas veces</option><option value="3">3 - A veces</option><option value="4">4 - Casi siempre</option><option value="5">5 - Siempre</option></select></div>
+        <div class="question"><label>2. ¿Participa activamente en las actividades del equipo?</label><select required name="q2"><option value="">Seleccionar</option><option value="1">1 - Nunca</option><option value="2">2 - Pocas veces</option><option value="3">3 - A veces</option><option value="4">4 - Casi siempre</option><option value="5">5 - Siempre</option></select></div>
+        <div class="question"><label>3. ¿Comunica sus ideas de forma clara?</label><select required name="q3"><option value="">Seleccionar</option><option value="1">1 - Nunca</option><option value="2">2 - Pocas veces</option><option value="3">3 - A veces</option><option value="4">4 - Casi siempre</option><option value="5">5 - Siempre</option></select></div>
+        <div class="question"><label>4. ¿Escucha y tiene en cuenta las ideas de los demás?</label><select required name="q4"><option value="">Seleccionar</option><option value="1">1 - Nunca</option><option value="2">2 - Pocas veces</option><option value="3">3 - A veces</option><option value="4">4 - Casi siempre</option><option value="5">5 - Siempre</option></select></div>
+        <div class="question"><label>5. ¿Respeta los acuerdos y tiempos establecidos?</label><select required name="q5"><option value="">Seleccionar</option><option value="1">1 - Nunca</option><option value="2">2 - Pocas veces</option><option value="3">3 - A veces</option><option value="4">4 - Casi siempre</option><option value="5">5 - Siempre</option></select></div>
+        <div class="question"><label>6. ¿Ayuda a otros integrantes cuando lo necesitan?</label><select required name="q6"><option value="">Seleccionar</option><option value="1">1 - Nunca</option><option value="2">2 - Pocas veces</option><option value="3">3 - A veces</option><option value="4">4 - Casi siempre</option><option value="5">5 - Siempre</option></select></div>
+        <div class="question"><label>7. ¿Mantiene una actitud respetuosa durante el trabajo?</label><select required name="q7"><option value="">Seleccionar</option><option value="1">1 - Nunca</option><option value="2">2 - Pocas veces</option><option value="3">3 - A veces</option><option value="4">4 - Casi siempre</option><option value="5">5 - Siempre</option></select></div>
+        <div class="question"><label>8. ¿Propone ideas o soluciones creativas?</label><select required name="q8"><option value="">Seleccionar</option><option value="1">1 - Nunca</option><option value="2">2 - Pocas veces</option><option value="3">3 - A veces</option><option value="4">4 - Casi siempre</option><option value="5">5 - Siempre</option></select></div>
+        <div class="question"><label>9. ¿Se organiza correctamente para realizar sus tareas?</label><select required name="q9"><option value="">Seleccionar</option><option value="1">1 - Nunca</option><option value="2">2 - Pocas veces</option><option value="3">3 - A veces</option><option value="4">4 - Casi siempre</option><option value="5">5 - Siempre</option></select></div>
+        <div class="question"><label>10. ¿Demuestra compromiso con el objetivo del proyecto?</label><select required name="q10"><option value="">Seleccionar</option><option value="1">1 - Nunca</option><option value="2">2 - Pocas veces</option><option value="3">3 - A veces</option><option value="4">4 - Casi siempre</option><option value="5">5 - Siempre</option></select></div>
+
+        <div class="question"><label>Comentario abierto (opcional)</label><textarea id="comentario" placeholder="Escribí una fortaleza o algo que el equipo podría mejorar..."></textarea></div>
+        <button class="btn" type="submit">Calcular resultados</button>
+      </form>
+
+      <div id="result" class="result">
+        <h3>Resultado de la evaluación</h3>
+        <div class="score" id="score">0 / 5</div>
+        <p id="interpretation"></p>
+        <div class="bar-wrap"><div class="bar-label"><span>Comunicación</span><span id="b1">-</span></div><div class="bar"><div class="fill" id="f1"></div></div></div>
+        <div class="bar-wrap"><div class="bar-label"><span>Responsabilidad y cumplimiento</span><span id="b2">-</span></div><div class="bar"><div class="fill" id="f2"></div></div></div>
+        <div class="bar-wrap"><div class="bar-label"><span>Participación y colaboración</span><span id="b3">-</span></div><div class="bar"><div class="fill" id="f3"></div></div></div>
+        <div class="bar-wrap"><div class="bar-label"><span>Organización</span><span id="b4">-</span></div><div class="bar"><div class="fill" id="f4"></div></div></div>
+        <div class="note">Este prototipo calcula resultados en el navegador. Para una implementación real se podría conectar a una base de datos y generar un panel para visualizar los resultados de todo el equipo.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-head">
+        <h2>4. Tipo de evaluación</h2>
+      </div>
+      <div class="grid">
+        <div class="card"><h3>Escala numérica</h3><p>Cada pregunta se responde del 1 al 5 para poder calcular promedios y comparar resultados.</p></div>
+        <div class="card"><h3>Anónima</h3><p>La propuesta recomienda que las respuestas sean anónimas para reducir la presión entre compañeros.</p></div>
+        <div class="card"><h3>Resultados visuales</h3><p>Los resultados se muestran mediante puntajes y barras, haciendo más fácil detectar fortalezas y aspectos a mejorar.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-head">
+        <h2>5. Diseño de la herramienta</h2>
+        <p>La solución propuesta es una página web o sistema online accesible desde computadora o celular.</p>
+      </div>
+      <div class="grid">
+        <div class="card"><span class="number">PASO 1</span><h3>Ingresar</h3><p>El usuario entra al sistema y selecciona el equipo o proyecto que quiere evaluar.</p></div>
+        <div class="card"><span class="number">PASO 2</span><h3>Responder</h3><p>Completa las diez preguntas utilizando la escala numérica y puede agregar un comentario.</p></div>
+        <div class="card"><span class="number">PASO 3</span><h3>Analizar</h3><p>El sistema calcula los resultados y los presenta de forma visual para identificar problemas.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="reflexion">
+    <div class="container">
+      <div class="section-head"><h2>6. Reflexión final</h2></div>
+      <div class="reflection">
+        <div class="card"><h3>¿Qué problemas aparecen en los trabajos grupales?</h3><p>Algunos problemas habituales son la falta de comunicación, la poca participación, la mala organización, el incumplimiento de tareas y las dificultades para trabajar de manera colaborativa.</p></div>
+        <div class="card"><h3>¿Puede ayudar una herramienta?</h3><p>Si. Una evaluación permite reunir información sobre el funcionamiento del equipo y detectar aspectos que normalmente pueden pasar desapercibidos.</p></div>
+        <div class="card"><h3>¿Qué limitaciones tendría?</h3><p>Las respuestas pueden ser subjetivas y algunas personas podrían no responder con total sinceridad. Además, una evaluación por sí sola no soluciona los problemas: los resultados tienen que utilizarse para tomar decisiones y mejorar.</p></div>
+        <div class="card"><h3>Presentación final</h3><p><b>Problema:</b> dificultades en el trabajo grupal. <br><b>Solución:</b> herramienta de evaluación 360°. <br><b>Funcionamiento:</b> preguntas, escala 1-5, resultados visuales y análisis.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">TP Nº 5 · Hackatón de Consultoras Tecnológicas · Prototipo de herramienta de evaluación 360°</div>
+</footer>
+
+<script>
+  const form = document.getElementById('evalForm');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    const values = [...form.querySelectorAll('select')].map(s => Number(s.value));
+    if(values.some(v => !v)) return;
+    const avg = values.reduce((a,b)=>a+b,0)/values.length;
+    document.getElementById('score').textContent = avg.toFixed(1) + ' / 5';
+    let text = avg >= 4 ? 'El resultado muestra un funcionamiento muy positivo en los aspectos evaluados.'
+      : avg >= 3 ? 'El resultado muestra un funcionamiento aceptable, aunque hay aspectos que pueden mejorarse.'
+      : 'El resultado indica que sería conveniente revisar varios aspectos del trabajo del equipo.';
+    document.getElementById('interpretation').textContent = text;
+
+    const groups = [
+      [2, 3],       // comunicación
+      [0, 4, 9],     // responsabilidad/cumplimiento
+      [1, 5, 6, 7],  // participación/colaboración
+      [8]            // organización
+    ];
+    groups.forEach((g,i)=>{
+      const a = g.reduce((sum,idx)=>sum+values[idx],0)/g.length;
+      document.getElementById('b'+(i+1)).textContent = a.toFixed(1)+'/5';
+      document.getElementById('f'+(i+1)).style.width = (a/5*100)+'%';
+    });
+    const result = document.getElementById('result');
+    result.style.display='block';
+    result.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+</script>
+</body>
+</html>
